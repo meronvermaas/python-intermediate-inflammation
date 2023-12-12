@@ -57,3 +57,49 @@ def daily_std(data):
    :returns: An array of std values of measurements for each day.
     """
     return np.std(data, axis=0)
+
+class Person:
+    "Basic Person class"
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return self.name
+
+class Observation:
+    def __init__(self, day, value):
+        self.day = day
+        self.value = value
+
+    def __str__(self):
+        return str(self.value)
+
+class Patient(Person):
+    """A patient in an inflammation study."""
+    def __init__(self, name):
+        super().__init__(name)
+        self.observations = []
+
+    def add_observation(self, value, day=None):
+        if day is None:
+            try:
+                day = self.observations[-1].day + 1
+
+            except IndexError:
+                day = 0
+
+        new_observation = Observation(day, value)
+        self.observations.append(new_observation)
+        return new_observation
+
+class Doctor(Person):
+    """A Basic Doctor Class."""
+    def __init__(self, name):
+        super().__init__(name)
+        self.patients = []
+
+    def add_patient(self, new_patient):
+        for patient in self.patients:
+            if patient.name == new_patient.name:
+                return
+        self.patients.append(new_patient)
